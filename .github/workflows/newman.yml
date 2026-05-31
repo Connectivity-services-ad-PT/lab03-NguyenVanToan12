@@ -6,6 +6,9 @@ on:
   pull_request:
     branches: [ "main" ]
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
+
 jobs:
   newman:
     runs-on: ubuntu-latest
@@ -31,7 +34,7 @@ jobs:
           nohup npm run mock:iot > prism-iot.log 2>&1 &
 
       - name: Wait for mock servers
-        run: npx wait-on http://localhost:4010/health http://localhost:4011/health --timeout 30000
+        run: npx wait-on http://127.0.0.1:4010/health http://127.0.0.1:4011/health --timeout 30000
 
       - name: Run Newman contract tests
         run: npm run test:mock
