@@ -32,7 +32,7 @@ jobs:
         run: |
           npm run mock:analytics > prism-analytics.log 2>&1 &
           npm run mock:iot > prism-iot.log 2>&1 &
-          npx wait-on http://127.0.0.1:4010/health http://127.0.0.1:4011/health --timeout 30000
+          npx wait-on http-get://127.0.0.1:4010/health http-get://127.0.0.1:4011/health --timeout 30000
           npm run test:mock
 
       - name: Show Prism logs on failure
