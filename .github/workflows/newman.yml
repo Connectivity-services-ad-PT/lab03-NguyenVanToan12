@@ -28,16 +28,12 @@ jobs:
       - name: Lint OpenAPI contracts
         run: npm run lint:contracts
 
-      - name: Start Prism mock servers
+      - name: Start mock servers and run Newman tests
         run: |
           nohup npm run mock:analytics > prism-analytics.log 2>&1 &
           nohup npm run mock:iot > prism-iot.log 2>&1 &
-
-      - name: Wait for mock servers
-        run: npx wait-on http://127.0.0.1:4010/health http://127.0.0.1:4011/health --timeout 30000
-
-      - name: Run Newman contract tests
-        run: npm run test:mock
+          npx wait-on http://127.0.0.1:4010/health http://127.0.0.1:4011/health --timeout 30000
+          npm run test:mock
 
       - name: Show Prism logs on failure
         if: failure()
