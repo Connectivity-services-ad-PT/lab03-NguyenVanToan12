@@ -30,8 +30,9 @@ jobs:
 
       - name: Start mock servers and run Newman tests
         run: |
-          nohup npm run mock:analytics > prism-analytics.log 2>&1 &
-          nohup npm run mock:iot > prism-iot.log 2>&1 &
+          npx prism mock contracts/analytics-alert.openapi.yaml -p 4010 --host 127.0.0.1 > prism-analytics.log 2>&1 < /dev/null &
+          npx prism mock contracts/iot-ingestion.openapi.yaml -p 4011 --host 127.0.0.1 > prism-iot.log 2>&1 < /dev/null &
+          disown -a
           npx wait-on http://127.0.0.1:4010/health http://127.0.0.1:4011/health --timeout 30000
           npm run test:mock
 
